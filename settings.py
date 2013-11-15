@@ -1,3 +1,5 @@
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
 
 ######################
 # CARTRIDGE SETTINGS #
@@ -8,7 +10,7 @@
 # out, for convenient overriding.
 
 # Sequence of available credit card types for payment.
-# SHOP_CARD_TYPES = ("Mastercard", "Visa", "Diners", "Amex")
+SHOP_CARD_TYPES = ("Mastercard", "Visa")
 
 # Setting to turn on featured images for shop categories. Defaults to False.
 # SHOP_CATEGORY_USE_FEATURED_IMAGE = True
@@ -27,7 +29,7 @@
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
 # used, will fall back to the system's locale.
-# SHOP_CURRENCY_LOCALE = ""
+SHOP_CURRENCY_LOCALE = "pt_BR.UTF-8"
 
 # Dotted package path and class name of the function that
 # is called on submit of the billing/shipping checkout step. This
@@ -168,7 +170,7 @@ USE_TZ = True
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "pt-BR"
 
 # A boolean that turns on/off debug mode. When set to ``True``, stack traces
 # are displayed for error pages. Should always be set to ``False`` in
@@ -182,7 +184,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
+USE_I18N = True
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "c051e0fe-8380-4b5f-afd8-c6c1234ea9b224c6f010-abab-4066-bb6e-d33a3adfa6971f61a50f-d62a-4f0b-8c5d-c771b565dfb8"
@@ -386,9 +388,6 @@ DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-# Allow all host headers
-ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 import os
