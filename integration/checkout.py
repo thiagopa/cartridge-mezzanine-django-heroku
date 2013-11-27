@@ -46,9 +46,17 @@ def default_billship_handler(request, order_form):
 	"""
 		40010 = SEDEX
 	"""
-	result = client.service.CalcPreco("","",40010, settings.CEP_ORIGIN, order_form.shipping_detail_postcode , "1.0",1, 50.0, 50.0, 50.0, 50.0, "N", 0 , "N")
+	origin_cep = settings.CEP_ORIGIN
+	data = order_form.cleaned_data
+	dest_cep = data["billing_detail_postcode"]
 
-	set_shipping(request, _("SEDEX"), result.Servicos[0][0].Valor)
+	result = client.service.CalcPreco("","",40010, origin_cep, dest_cep , "1.0",1, 50.0, 50.0, 50.0, 50.0, "N", 0 , "N")
+
+	#price = Decimal(result.Servicos[0][0].Valor.replace(".",","))
+
+	price = 10
+
+	set_shipping(request, _("SEDEX"), price)
 
 
 def default_tax_handler(request, order_form):
