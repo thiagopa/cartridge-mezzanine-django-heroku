@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
@@ -35,8 +36,8 @@ SHOP_CURRENCY_LOCALE = "pt_BR.UTF-8"
 # is called on submit of the billing/shipping checkout step. This
 # is where shipping calculation can be performed and set using the
 # function ``cartridge.shop.utils.set_shipping``.
-# SHOP_HANDLER_BILLING_SHIPPING = \
-#                           "cartridge.shop.checkout.default_billship_handler"
+SHOP_HANDLER_BILLING_SHIPPING = \
+                           "integration.checkout.default_billship_handler"
 
 # Dotted package path and class name of the function that
 # is called once an order is successful and all of the order
@@ -306,6 +307,7 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     #"mezzanine.mobile",
+    "integration"
 )
 
 # List of processors used by RequestContext to populate the context.
