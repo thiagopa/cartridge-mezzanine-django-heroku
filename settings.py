@@ -36,8 +36,7 @@ SHOP_CURRENCY_LOCALE = "pt_BR.UTF-8"
 # is called on submit of the billing/shipping checkout step. This
 # is where shipping calculation can be performed and set using the
 # function ``cartridge.shop.utils.set_shipping``.
-SHOP_HANDLER_BILLING_SHIPPING = \
-                           "integration.checkout.default_billship_handler"
+SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.default_billship_handler"
 
 # Dotted package path and class name of the function that
 # is called once an order is successful and all of the order
@@ -48,7 +47,7 @@ SHOP_HANDLER_BILLING_SHIPPING = \
 # Dotted package path and class name of the function that
 # is called on submit of the payment checkout step. This is where
 # integration with a payment gateway should be implemented.
-# SHOP_HANDLER_PAYMENT = "cartridge.shop.checkout.default_payment_handler"
+SHOP_HANDLER_PAYMENT = "cartridge.shop.payment.paypal.process"
 
 # Sequence of value/name pairs for order statuses.
 # SHOP_ORDER_STATUS_CHOICES = (
@@ -413,3 +412,10 @@ try:
 except ImportError:
     pass
 
+
+# PayPal Credentials
+#import os
+
+PAYPAL_USER = os.environ["PAYPAL_USER"]
+PAYPAL_PASSWORD = os.environ["PAYPAL_PASSWORD"]
+PAYPAL_SIGNATURE = os.environ["PAYPAL_SIGNATURE"]
