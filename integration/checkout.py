@@ -14,6 +14,7 @@ from cartridge.shop.models import Order
 from cartridge.shop.utils import set_shipping, set_tax, sign
 
 from suds.client import Client
+from decimal import Decimal
 
 class CheckoutError(Exception):
     """
@@ -52,9 +53,7 @@ def default_billship_handler(request, order_form):
 
 	result = client.service.CalcPreco("","",40010, origin_cep, dest_cep , "1.0",1, 50.0, 50.0, 50.0, 50.0, "N", 0 , "N")
 
-	#price = Decimal(result.Servicos[0][0].Valor.replace(".",","))
-
-	price = 10
+	price = Decimal(result.Servicos[0][0].Valor.replace(",","."))
 
 	set_shipping(request, _("SEDEX"), price)
 
