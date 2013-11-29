@@ -1,3 +1,4 @@
+# encoding: utf-8
 # -*- coding: utf8 -*-
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
@@ -47,7 +48,7 @@ SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.default_billship_handler"
 # Dotted package path and class name of the function that
 # is called on submit of the payment checkout step. This is where
 # integration with a payment gateway should be implemented.
-SHOP_HANDLER_PAYMENT = "cartridge.shop.payment.paypal.process"
+SHOP_HANDLER_PAYMENT = "integration.paypal.process"
 
 # Sequence of value/name pairs for order statuses.
 # SHOP_ORDER_STATUS_CHOICES = (
@@ -152,7 +153,7 @@ USE_SOUTH = True
 # In the format (('Full Name', 'email@example.com'),
 #                ('Full Name', 'anotheremail@example.com'))
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+     ('Thiago Pagonha', 'thi.pag@gmail.com')
 )
 MANAGERS = ADMINS
 
@@ -419,3 +420,44 @@ except ImportError:
 PAYPAL_USER = os.environ["PAYPAL_USER"]
 PAYPAL_PASSWORD = os.environ["PAYPAL_PASSWORD"]
 PAYPAL_SIGNATURE = os.environ["PAYPAL_SIGNATURE"]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console':{
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        'integration.paypal': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'DEBUG',
+        }
+    }
+}

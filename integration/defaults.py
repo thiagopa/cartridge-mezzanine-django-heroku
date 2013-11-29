@@ -1,4 +1,5 @@
-# -*- coding: utf8 -*-
+# encoding : utf-8
+# -*- coding: utf-8 -*-
 # Custom Settings
 from mezzanine.conf import register_setting
 
