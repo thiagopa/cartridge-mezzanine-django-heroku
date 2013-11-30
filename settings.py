@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ['*']
 # out, for convenient overriding.
 
 # Sequence of available credit card types for payment.
-SHOP_CARD_TYPES = ("Mastercard", "Visa")
+# SHOP_CARD_TYPES = ("Mastercard", "Visa")
 
 # Setting to turn on featured images for shop categories. Defaults to False.
 # SHOP_CATEGORY_USE_FEATURED_IMAGE = True
@@ -22,11 +22,11 @@ SHOP_CARD_TYPES = ("Mastercard", "Visa")
 
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
-# SHOP_CHECKOUT_STEPS_SPLIT = True
+SHOP_CHECKOUT_STEPS_SPLIT = True
 
 # If True, the checkout process has a final confirmation step before
 # completion.
-# SHOP_CHECKOUT_STEPS_CONFIRMATION = True
+SHOP_CHECKOUT_STEPS_CONFIRMATION = True
 
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
@@ -37,7 +37,7 @@ SHOP_CURRENCY_LOCALE = "pt_BR.UTF-8"
 # is called on submit of the billing/shipping checkout step. This
 # is where shipping calculation can be performed and set using the
 # function ``cartridge.shop.utils.set_shipping``.
-SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.default_billship_handler"
+SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.correios_billship_handler"
 
 # Dotted package path and class name of the function that
 # is called once an order is successful and all of the order
@@ -48,13 +48,16 @@ SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.default_billship_handler"
 # Dotted package path and class name of the function that
 # is called on submit of the payment checkout step. This is where
 # integration with a payment gateway should be implemented.
-SHOP_HANDLER_PAYMENT = "integration.paypal.process"
+SHOP_HANDLER_PAYMENT = "integration.checkout.paypal_payment_handler"
 
-# Sequence of value/name pairs for order statuses.
-# SHOP_ORDER_STATUS_CHOICES = (
-#     (1, "Unprocessed"),
-#     (2, "Processed"),
-# )
+SHOP_ORDER_STATUS_CHOICES = (
+     (1, "Não Processado"),
+     (2, "Pendente de Pagamento"),
+     (3, "Pago, Falta Enviar"),
+     (4, "Enviado"),
+     (5, "Entregue")
+
+ )
 
 # Sequence of value/name pairs for types of product options,
 # eg Size, Colour.
@@ -417,9 +420,12 @@ except ImportError:
 # PayPal Credentials
 #import os
 
-PAYPAL_USER = os.environ["PAYPAL_USER"]
-PAYPAL_PASSWORD = os.environ["PAYPAL_PASSWORD"]
-PAYPAL_SIGNATURE = os.environ["PAYPAL_SIGNATURE"]
+#PAYPAL_USER = os.environ["PAYPAL_USER"]
+#PAYPAL_PASSWORD = os.environ["PAYPAL_PASSWORD"]
+#PAYPAL_SIGNATURE = os.environ["PAYPAL_SIGNATURE"]
+
+PAYPAL_CLIENT_ID = os.environ["PAYPAL_CLIENT_ID"]
+PAYPAL_SECRET = os.environ["PAYPAL_SECRET"]
 
 LOGGING = {
     'version': 1,
@@ -455,7 +461,7 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        'integration.paypal': {
+        'integration': {
             'handlers': ['console', 'mail_admins'],
             'level': 'DEBUG',
         }

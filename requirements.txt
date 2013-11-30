@@ -11,7 +11,9 @@ filebrowser-safe==0.2.31
 grappelli-safe==0.2.23
 gunicorn==18.0
 html5lib==0.95
+httplib2==0.8
 oauthlib==0.6.0
+paypalrestsdk==0.6.4
 pisa==3.0.33
 psycopg2==2.5.1
 pytz==2013.8
@@ -19,4 +21,5 @@ reportlab==2.7
 requests==1.2.3
 requests-oauthlib==0.3.3
 static==0.4
+suds==0.4
 wsgiref==0.1.2
