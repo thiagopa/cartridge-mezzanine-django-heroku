@@ -1,0 +1,17 @@
+{% extends "shop/base.html" %}
+{% load i18n future %}
+
+{% block meta_title %}{% trans "Confirmação de Pagamento" %}{% endblock %}
+
+{% block title %}{% trans "Confirmação de Pagamento" %}{% endblock %}
+
+{% block main %}
+<p>{% trans "Thank you for shopping with us, your order is complete." %}</p>
+<p>{% trans "Seu pagamento foi confirmado e seu produto será enviado em breve." %}</p>
+<br>
+<p>
+    <a class="btn btn-large btn-primary" href="{% url "shop_invoice" order.id %}?format=pdf">{% trans "Download PDF invoice" %}</a>
+    <a class="btn btn-large" target="_blank" href="{% url "shop_invoice" order.id %}">{% trans "View invoice in your browser" %}</a>
+</p>
+{% endblock %}
+

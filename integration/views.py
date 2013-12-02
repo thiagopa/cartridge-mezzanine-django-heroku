@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 from django.views.decorators.cache import never_cache
 
+from mezzanine.utils.views import render
 from mezzanine.conf import settings
 
 from cartridge.shop.models import Product, ProductVariation, Order, OrderItem
@@ -45,7 +46,7 @@ def paypal_redirect(request, order_id):
     return redirect(redirect_url)
 
 @never_cache
-def paypal_execute(request):
+def paypal_execute(request, template="shop/payment_confirmation.html"):
     """
     Recebe a confirmação de pagamento do paypal
     """
@@ -62,4 +63,5 @@ def paypal_execute(request):
     order.status = 3
     order.save()
 
-    return HttpResponse()
+    response = render(request, template, context)
+    return response
