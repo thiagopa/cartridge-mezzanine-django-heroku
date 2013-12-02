@@ -7649,3 +7649,7 @@ legend {
 .affix {
   position: fixed;
 }
+
+.span3 {
+ width: 220px;
+}
