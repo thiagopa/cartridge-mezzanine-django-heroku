@@ -64,5 +64,7 @@ def paypal_execute(request, template="shop/payment_confirmation.html"):
     order.status = 3
     order.save()
 
+    context = { "order" : order }
+
     response = render(request, template, context)
     return response
