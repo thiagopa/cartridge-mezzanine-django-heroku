@@ -20,6 +20,9 @@ if settings.DEBUG:
 	mode = "sandbox"
 else:
 	mode = "live"
+
+logger.debug("Credenciais de acesso : mode = %s, client_id = %s, client_secret = %s" % (mode,client_id,client_secret))
+
 api = paypalrestsdk.set_config(
 	mode = mode, # sandbox or live
 	client_id = PAYPAL_CLIENT_ID,
