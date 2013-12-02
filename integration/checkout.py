@@ -22,6 +22,8 @@ from cartridge.shop.checkout import CheckoutError
 import paypalrestsdk
 from paypalrestsdk import Payment
 
+from integration import paypal
+
 def correios_billship_handler(request, order_form):
 	"""
 	Default billing/shipping handler - called when the first step in
@@ -54,7 +56,7 @@ def correios_billship_handler(request, order_form):
 		result = client.service.CalcPreco("","",40010, origin_cep, dest_cep , "1.0",1, 50.0, 50.0, 50.0, 50.0, "N", 0 , "N")
 
 		price = Decimal(result.Servicos[0][0].Valor.replace(",","."))
-		logger.debug("preço %10.2d" % price)
+		logger.debug("preço %s" % price)
 
 		set_shipping(request, _("SEDEX"), price)
 
@@ -73,30 +75,6 @@ def paypal_payment_handler(request, order_form, order):
    
 	logger.debug("request %s \n order_form %s \n order %s" % (request, order_form, order) )
  
-	try:
-		PAYPAL_CLIENT_ID = settings.PAYPAL_CLIENT_ID
-		PAYPAL_SECRET = settings.PAYPAL_SECRET
-	except AttributeError:
-		raise ImproperlyConfigured(_("Credenciais de acesso ao paypal estão faltando, "
-				"isso inclui PAYPAL_CLIENT_ID e PAYPAL_SECRET "
-				"basta incluí-las no settings.py para serem utilizadas "
-				"no processador de pagamentos do paypal."))
-
-	if settings.DEBUG:
-		mode = "sandbox"
-	else:
-		mode = "live"
-
-	api = paypalrestsdk.set_config(
-		mode = mode, # sandbox or live
-		client_id = PAYPAL_CLIENT_ID,
-		client_secret = PAYPAL_SECRET
-	)
-	# autenticação
-	access_token = api.get_token()
-
-	logger.debug("Paypal Access Token %s" % access_token)
-
 	data = order_form.cleaned_data
 	locale.setlocale(locale.LC_ALL, settings.SHOP_CURRENCY_LOCALE)
 	currency = locale.localeconv()
@@ -109,8 +87,8 @@ def paypal_payment_handler(request, order_form, order):
 			"payment_method": "paypal",
 		},
 		"redirect_urls" : {
-			"return_url" : "http://localhost:5000/payment/execute",
-			"cancel_url" : "http://localhost:5000"
+			"return_url" : "http://localhost:5000/integration/execute",
+			"cancel_url" : "http://localhost:5000/integration/cancel"
 		},
 		"transactions": [{
 			"amount": {

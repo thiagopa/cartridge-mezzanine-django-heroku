@@ -1,0 +1,23 @@
+{% extends "shop/checkout.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block fields %}
+{% if request.cart.has_items %}
+
+
+<div class="page-header">
+  <h1>Verifique as formas de pagamento disponíveis abaixo</h1>
+</div>
+
+<div class="input-group">
+      <span class="input-group-addon">
+        <input type="radio" checked>
+      </span>
+<!-- PayPal Logo --> <img src="https://www.paypalobjects.com/webstatic/mktg/br/compra_segura_horizontal.png" border="0" alt="CompraSegura"> <!-- PayPal Logo -->
+</div>
+
+{% fields_for form.other_fields %}
+
+
+{% endif %}
+{% endblock %}

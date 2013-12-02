@@ -18,7 +18,7 @@ ALLOWED_HOSTS = ['*']
 # SHOP_CATEGORY_USE_FEATURED_IMAGE = True
 
 # Set an alternative OrderForm class for the checkout process.
-SHOP_CHECKOUT_FORM_CLASS = 'payments.multipayments.forms.base.CallbackUUIDOrderForm'
+SHOP_CHECKOUT_FORM_CLASS = 'integration.forms.ExternalPaymentOrderForm'
 
 # If True, the checkout process is split into separate
 # billing/shipping and payment steps.
@@ -26,7 +26,7 @@ SHOP_CHECKOUT_STEPS_SPLIT = True
 
 # If True, the checkout process has a final confirmation step before
 # completion.
-SHOP_CHECKOUT_STEPS_CONFIRMATION = False
+SHOP_CHECKOUT_STEPS_CONFIRMATION = True
 
 # Controls the formatting of monetary values accord to the locale
 # module in the python standard library. If an empty string is
@@ -48,7 +48,7 @@ SHOP_HANDLER_BILLING_SHIPPING = "integration.checkout.correios_billship_handler"
 # Dotted package path and class name of the function that
 # is called on submit of the payment checkout step. This is where
 # integration with a payment gateway should be implemented.
-#SHOP_HANDLER_PAYMENT = "integration.checkout.paypal_payment_handler"
+SHOP_HANDLER_PAYMENT = "integration.checkout.paypal_payment_handler"
 
 SHOP_ORDER_STATUS_CHOICES = (
      (1, "Não Processado"),
@@ -121,17 +121,17 @@ SHOP_ORDER_STATUS_CHOICES = (
 #
 EXTRA_MODEL_FIELDS = (
       (
-           "cartridge.shop.models.Order.callback_uuid",
-           "django.db.models.CharField",
-           (),
-           {"blank" : True, "max_length" : 36 },
-      ),
-      (
            "cartridge.shop.models.Order.rastreamento_correios",
            "django.db.models.CharField",
            (),
            {"blank" : True, "max_length" : 36},
-      )
+      ),
+      (
+           "cartridge.shop.models.Order.paypal_redirect_token",
+           "django.db.models.CharField",
+           (),
+           {"blank" : True, "max_length" : 36},
+      ),
 #     (
 #         # Dotted path to field.
 #         "mezzanine.blog.models.BlogPost.image",
@@ -322,7 +322,6 @@ INSTALLED_APPS = (
     "mezzanine.twitter",
     "mezzanine.accounts",
     #"mezzanine.mobile",
-    "payments.multipayments",
     "integration"
 )
 
@@ -339,7 +338,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.core.context_processors.tz",
     "mezzanine.conf.context_processors.settings",
-    "payments.multipayments.context_processors.settings",
 )
 
 # List of middleware classes to use. Order is important; in the request phase,
@@ -440,8 +438,10 @@ try :
 
 	PAYPAL_CLIENT_ID = os.environ["PAYPAL_CLIENT_ID"]
 	PAYPAL_SECRET = os.environ["PAYPAL_SECRET"]
+
+	PAYPAL_EMAIL = os.environ["PAYPAL_EMAIL"]
 except KeyError:
-	PAYPAL_USER = ""
+	pass
 
 LOGGING = {
     'version': 1,
@@ -484,40 +484,4 @@ LOGGING = {
     }
 }
 
-# Cartridge Multiple Payments
-# WHEN TRUE, Users will be able to submit payment using the regular paradigm
-# as well as the secondary payment processors.  WHEN FALSE the regular paradigm
-# will be hidden / disabled.
-PRIMARY_PAYMENT_PROCESSOR_IN_USE = True
 
-# These processors are forms to submit to remote URLs for processing.
-SECONDARY_PAYMENT_PROCESSORS = (
-    ('paypal', {
-        'name' : 'Pay With Pay-Pal',
-        'form' : 'payments.multipayments.forms.paypal.PaypalSubmissionForm'
-    }),
-)
-
-# Currency type.
-PAYPAL_CURRENCY = "BRL"
-
-# Business account email. Sandbox emails look like this.
-PAYPAL_BUSINESS = PAYPAL_USER
-
-# Use this to enable https on return URLs.  This is strongly recommended! (Except for sandbox)
-PAYPAL_RETURN_WITH_HTTPS = False
-
-# Function that returns args for `reverse`. 
-# URL is sent to PayPal as the for returning to a 'complete' landing page.
-PAYPAL_RETURN_URL = lambda cart, uuid, order_form: ('shop_complete', None, None)
-
-# Function that returns args for `reverse`. 
-# URL is sent to PayPal as the URL to callback to for PayPal IPN.
-# Set to None if you do not wish to use IPN.
-PAYPAL_IPN_URL = None # lambda cart, uuid, order_form: ('my_paypal_ipn', None, {'uuid' : uuid})
-
-# URL the secondary-payment-form is submitted to
-# Dev example
-PAYPAL_SUBMIT_URL = 'https://www.sandbox.paypal.com/cgi-bin/webscr'
-# Prod example
-# PAYPAL_SUBMIT_URL = 'https://www.paypal.com/cgi-bin/webscr'
