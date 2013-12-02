@@ -1,1 +1,1 @@
-web: gunicorn wsgi -b 0.0.0.0:$PORT -c gunicorn.conf
+web: gunicorn wsgi -b 0.0.0.0:$PORT --log-level DEBUG --debug
