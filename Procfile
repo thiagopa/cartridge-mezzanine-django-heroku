@@ -1,1 +1,1 @@
-web: gunicorn wsgi -b 0.0.0.0:$PORT --log-level DEBUG --debug
+web: gunicorn --bind 0.0.0.0:$PORT --log-level DEBUG --debug wsgi
