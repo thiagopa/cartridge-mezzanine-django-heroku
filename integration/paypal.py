@@ -1,8 +1,10 @@
-# encoding=utf-8
+# -*- coding: utf-8 -*-
 import paypalrestsdk
 from mezzanine.conf import settings
 import logging
 from django.utils.translation import ugettext as _
+from django.core.exceptions import ImproperlyConfigured
+
 logger = logging.getLogger("integration.paypal")
 
 try:
@@ -13,6 +15,7 @@ except AttributeError:
 			"isso inclui PAYPAL_CLIENT_ID e PAYPAL_SECRET "
 			"basta incluí-las no settings.py para serem utilizadas "
 			"no processador de pagamentos do paypal."))
+
 if settings.DEBUG:
 	mode = "sandbox"
 else:

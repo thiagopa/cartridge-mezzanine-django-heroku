@@ -1,4 +1,5 @@
-# encoding=utf-8
+# -*- coding: utf-8 -*-
+# encoding: utf-8
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
