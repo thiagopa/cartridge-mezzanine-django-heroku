@@ -88,8 +88,8 @@ def paypal_payment_handler(request, order_form, order):
 			"payment_method": "paypal",
 		},
 		"redirect_urls" : {
-			"return_url" : "http://%s/integration/execute" % server_url,
-			"cancel_url" : "http://%s/integration/cancel" % server_url
+			"return_url" : "http://%s/integration/execute" % server_host,
+			"cancel_url" : "http://%s/integration/cancel" % server_host
 		},
 		"transactions": [{
 			"amount": {
