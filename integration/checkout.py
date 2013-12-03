@@ -81,15 +81,15 @@ def paypal_payment_handler(request, order_form, order):
 	currency_code = currency['int_curr_symbol'][0:3] 
 	logger.debug("Currency Code %s" % currency_code)
 
-	server_url = request.build_absolute_uri()
+	server_host = request.get_host()
 	payment = Payment({
 		"intent": "sale",
 		"payer": {
 			"payment_method": "paypal",
 		},
 		"redirect_urls" : {
-			"return_url" : "%s/integration/execute" % server_url,
-			"cancel_url" : "%s/integration/cancel" % server_url
+			"return_url" : "http://%s/integration/execute" % server_url,
+			"cancel_url" : "http://%s/integration/cancel" % server_url
 		},
 		"transactions": [{
 			"amount": {
